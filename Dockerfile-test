@@ -1,5 +1,5 @@
-FROM java:8u111
 FROM node:14.5.0-alpine
+FROM openjdk:7
 
 MAINTAINER yuliang <yu.liang@freelog.com>
 
@@ -19,4 +19,5 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 EXPOSE 7727
 
+ENTRYPOINT ["java" "-jar", "./freelog-compiler-generator.jar"]
 CMD [ "npm", "start" ]
