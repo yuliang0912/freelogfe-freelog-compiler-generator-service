@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "adm-zip": "^0.4.16",
+    "archiver": "^4.0.1",
     "egg-freelog-base": "^1.2.39",
     "egg-scripts": "^2.10.0",
     "midway": "^1.0.0"
@@ -26,8 +27,8 @@
     "node": ">=10.16.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=midway-server-my_first_midway_project --framework=midway --ts",
-    "stop": "egg-scripts stop --title=midway-server-my_first_midway_project",
+    "start": "egg-scripts start --daemon --freelog-compiler-generator-service --framework=midway --ts",
+    "stop": "egg-scripts stop --title=freelog-compiler-generator-service",
     "start_build": "npm run build && cross-env NODE_ENV=development midway-bin dev",
     "clean": "midway-bin clean",
     "dev": "cross-env NODE_ENV=local midway-bin dev --ts",

@@ -3,6 +3,7 @@ import {provide} from 'midway';
 import {exec} from 'child_process';
 
 const admZip = require('adm-zip');
+// const archiver = require('archiver');
 import {ICompilerGeneratorService, CommandLineOption} from '../../interface';
 
 @provide('compilerGeneratorService')
@@ -38,7 +39,7 @@ export class CompilerGeneratorService implements ICompilerGeneratorService {
      * @param {string} antrlGrammarParsePath
      */
     generateGrammarZip(options: CommandLineOption, g4GrammarPath: string, antrlGrammarParsePath: string): void {
-        const localBaseDownPath = `./download-grammar-package/${options.color}/${options.language}/package`.toLowerCase()
+        const localBaseDownPath = `./download-grammar-package/${options.color}/${options.language}/package`.toLowerCase();
         const localG4GrammarPath = `${localBaseDownPath}/g4_grammar`;
         this._createDir(localBaseDownPath, localG4GrammarPath);
 
@@ -52,6 +53,13 @@ export class CompilerGeneratorService implements ICompilerGeneratorService {
         const zip = new admZip();
         zip.addLocalFolder(localBaseDownPath);
         zip.writeZip(this.getZipPackagePath(options));
+
+        // const output = fs.createWriteStream(`./download-grammar-package/${options.color}/${options.language}/package.zip`);
+        // const archive = archiver('zip');
+        // archive.pipe(output);
+        // archive.on('error', console.error)
+        // archive.directory(`download-grammar-package/${options.color}/${options.language}/package`, false);
+        // archive.finalize();
         this._rmDir(localBaseDownPath);
     }
 
