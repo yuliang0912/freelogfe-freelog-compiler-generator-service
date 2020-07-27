@@ -1,5 +1,4 @@
 FROM openjdk:7
-FROM node:14.5.0-alpine
 
 MAINTAINER yuliang <yu.liang@freelog.com>
 
@@ -8,6 +7,11 @@ RUN mkdir -p /data/freelog-compiler-generator-service
 WORKDIR /data/freelog-compiler-generator-service
 
 COPY . /data/freelog-compiler-generator-service
+
+RUN apt-get install -y curl \
+  && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+  && apt-get install -y nodejs \
+  && curl -L https://www.npmjs.com/install.sh | sh
 
 RUN npm install
 
