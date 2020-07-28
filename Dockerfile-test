@@ -1,4 +1,4 @@
-FROM openjdk:latest
+FROM openjdk:16-jdk
 
 MAINTAINER yuliang <yu.liang@freelog.com>
 
