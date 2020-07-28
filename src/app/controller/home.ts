@@ -19,8 +19,7 @@ export class HomeController {
         const zipPackagePath = this.compilerGeneratorService.getZipPackagePath(options);
         if (!fs.existsSync(zipPackagePath)) {
             await this.compilerGeneratorService.generateGrammar(options).then(antrlGrammarPath => {
-                ctx.error(antrlGrammarPath);
-                // this.compilerGeneratorService.generateGrammarZip(options, './generated_grammar', antrlGrammarPath);
+                this.compilerGeneratorService.generateGrammarZip(options, './generated_grammar', antrlGrammarPath);
             }).catch(ctx.error);
         }
         ctx.body = fs.createReadStream(zipPackagePath);
