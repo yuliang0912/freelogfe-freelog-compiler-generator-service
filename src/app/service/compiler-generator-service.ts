@@ -4,12 +4,12 @@ import {exec} from 'child_process';
 
 const admZip = require('adm-zip');
 // const archiver = require('archiver');
-import {ICompilerGeneratorService, CommandLineOption} from '../../interface';
+import {CommandLineOption} from '../../interface';
 
 @provide('compilerGeneratorService')
-export class CompilerGeneratorService implements ICompilerGeneratorService {
+export class CompilerGeneratorService {
 
-    readonly compilerGeneratorJarPath = './freelog-compiler-generator.jar';
+    readonly compilerGeneratorJarPath = './freelog-cg-0.0.1.jar';
 
     /**
      * 生成G4语法以及对应的语言相关parser
@@ -18,14 +18,14 @@ export class CompilerGeneratorService implements ICompilerGeneratorService {
      */
     async generateGrammar(options: CommandLineOption): Promise<string> {
         const outputDir = this._generateGrammarOutputDir(options);
-        const command = `java -jar ${this.compilerGeneratorJarPath} -c ${options.color} -t ${options.language} -o ${outputDir}`;
+        const command = `java -jar ${this.compilerGeneratorJarPath} -sn ${options.color} -t ${options.language} -o ${outputDir} -ng false`;
 
         return new Promise((resolve, reject) => {
             exec(command, function (error, stdout, stderr) {
                 error || stderr ? reject(error || stderr) : resolve(stdout);
             });
         }).then(() => {
-            return `${outputDir}/generated_grammar`;
+            return `${outputDir}/generated_grammars`;
         }).catch(error => {
             this._rmDir(outputDir);
             return error;
@@ -39,6 +39,7 @@ export class CompilerGeneratorService implements ICompilerGeneratorService {
      * @param {string} antrlGrammarParsePath
      */
     generateGrammarZip(options: CommandLineOption, g4GrammarPath: string, antrlGrammarParsePath: string): void {
+
         const localBaseDownPath = `./download-grammar-package/${options.color}/${options.language}/package`.toLowerCase();
         const localG4GrammarPath = `${localBaseDownPath}/g4_grammar`;
         this._createDir(localBaseDownPath, localG4GrammarPath);
@@ -46,6 +47,7 @@ export class CompilerGeneratorService implements ICompilerGeneratorService {
         fs.readdirSync(antrlGrammarParsePath).forEach(file => {
             fs.copyFileSync(`${antrlGrammarParsePath}/${file}`, `${localBaseDownPath}/${file}`);
         });
+
         fs.readdirSync(g4GrammarPath).forEach(file => {
             fs.copyFileSync(`${g4GrammarPath}/${file}`, `${localG4GrammarPath}/${file}`);
         });

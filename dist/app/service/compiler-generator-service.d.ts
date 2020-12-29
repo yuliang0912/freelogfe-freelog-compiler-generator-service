@@ -1,6 +1,6 @@
-import { ICompilerGeneratorService, CommandLineOption } from '../../interface';
-export declare class CompilerGeneratorService implements ICompilerGeneratorService {
-    readonly compilerGeneratorJarPath = "./freelog-compiler-generator.jar";
+import { CommandLineOption } from '../../interface';
+export declare class CompilerGeneratorService {
+    readonly compilerGeneratorJarPath = "./freelog-cg-0.0.1.jar";
     /**
      * 生成G4语法以及对应的语言相关parser
      * @param {CommandLineOption} options

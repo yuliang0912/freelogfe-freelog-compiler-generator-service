@@ -1,13 +1,16 @@
 import {inject, controller, get, del, provide} from 'midway';
-import {ICompilerGeneratorService} from '../../interface';
-import * as fs from 'fs';
+import {existsSync, createReadStream} from 'fs';
+import {CompilerGeneratorService} from '../service/compiler-generator-service';
+import {FreelogContext} from 'egg-freelog-base';
 
 @provide()
 @controller('/')
 export class HomeController {
 
     @inject()
-    compilerGeneratorService: ICompilerGeneratorService;
+    ctx: FreelogContext;
+    @inject()
+    compilerGeneratorService: CompilerGeneratorService;
 
     @get('/')
     async index(ctx) {
@@ -17,12 +20,12 @@ export class HomeController {
 
         const options = {language, color};
         const zipPackagePath = this.compilerGeneratorService.getZipPackagePath(options);
-        if (!fs.existsSync(zipPackagePath)) {
+        if (!existsSync(zipPackagePath)) {
             await this.compilerGeneratorService.generateGrammar(options).then(antrlGrammarPath => {
-                this.compilerGeneratorService.generateGrammarZip(options, './generated_grammar', antrlGrammarPath);
+                this.compilerGeneratorService.generateGrammarZip(options, './generated_grammars', antrlGrammarPath);
             }).catch(ctx.error);
         }
-        ctx.body = fs.createReadStream(zipPackagePath);
+        ctx.body = createReadStream(zipPackagePath);
         ctx.attachment(`${color}_${language}.zip`);
     }
 
